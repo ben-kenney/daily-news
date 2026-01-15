@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import SearchTerm, NewsDigest, UserProfile
 from .forms import SearchTermForm, UserProfileForm
+from .tasks import _generate_user_digest
 
 @login_required
 def dashboard(request):
@@ -27,6 +28,10 @@ def add_search_term(request):
             try:
                 term.save()
                 messages.success(request, 'Search term added successfully.')
+                # Check if this is the first digest for the user
+                if not NewsDigest.objects.filter(user=request.user).exists():
+                    _generate_user_digest(request.user)
+                    messages.info(request, 'Generating your first news digest...')
                 return redirect('dashboard')
             except Exception:
                 messages.error(request, 'This search term already exists.')
