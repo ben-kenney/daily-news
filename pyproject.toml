@@ -11,6 +11,7 @@ dependencies = [
     "django>=6.0.1",
     "django-allauth>=65.13.1",
     "django-anymail[sendinblue]>=14.0",
+    "django-tz-detect>=0.5.0",
     "google-generativeai>=0.8.6",
     "newsapi-python>=0.2.7",
     "openai>=2.15.0",

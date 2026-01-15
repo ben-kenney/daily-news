@@ -61,5 +61,8 @@ def profile(request):
             messages.success(request, 'Profile updated.')
             return redirect('dashboard')
     else:
-        form = UserProfileForm(instance=profile)
+        initial = {}
+        if hasattr(request, 'timezone') and request.timezone:
+            initial['timezone'] = str(request.timezone)
+        form = UserProfileForm(instance=profile, initial=initial)
     return render(request, 'news/profile.html', {'form': form})
