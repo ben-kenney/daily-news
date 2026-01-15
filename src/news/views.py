@@ -6,15 +6,36 @@ from django.contrib import messages
 from .models import SearchTerm, NewsDigest, UserProfile
 from .forms import SearchTermForm, UserProfileForm
 from .tasks import _generate_user_digest
+import pytz
+from datetime import datetime, timedelta
 
 @login_required
 def dashboard(request):
     """User dashboard showing recent digests and search terms."""
     digests = NewsDigest.objects.filter(user=request.user).order_by('-created_at')[:10]
     search_terms = SearchTerm.objects.filter(user=request.user)
+
+    # Calculate time until next digest
+    try:
+        user_tz = pytz.timezone(request.user.userprofile.timezone)
+    except UserProfile.DoesNotExist:
+        user_tz = pytz.UTC
+
+    now_utc = datetime.now(pytz.UTC)
+    now_user = now_utc.astimezone(user_tz)
+    next_digest = now_user.replace(hour=8, minute=0, second=0, microsecond=0)
+    if now_user.hour >= 8:
+        next_digest += timedelta(days=1)
+    time_remaining = next_digest - now_user
+
+    hours, remainder = divmod(int(time_remaining.total_seconds()), 3600)
+    minutes = remainder // 60
+
     return render(request, 'news/dashboard.html', {
         'digests': digests,
         'search_terms': search_terms,
+        'hours_until_next': hours,
+        'minutes_until_next': minutes,
     })
 
 @login_required
