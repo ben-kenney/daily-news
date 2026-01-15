@@ -83,6 +83,10 @@ def digest_detail(request, pk):
 def profile(request):
     """User profile settings."""
     profile, created = UserProfile.objects.get_or_create(user=request.user)
+    if created and hasattr(request, 'timezone') and request.timezone:
+        # Auto-set timezone on profile creation if detected
+        profile.timezone = str(request.timezone)
+        profile.save()
     if request.method == 'POST':
         form = UserProfileForm(request.POST, instance=profile)
         if form.is_valid():
