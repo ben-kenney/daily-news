@@ -1,0 +1,19 @@
+{% extends 'news/base.html' %}
+
+{% block title %}Digest Detail{% endblock %}
+
+{% block content %}
+<h1>Digest for {{ digest.created_at|date:"M d, Y" }}</h1>
+<p><strong>Summary:</strong></p>
+<p>{{ digest.summary }}</p>
+
+<h2>Articles</h2>
+<ul class="list-group">
+    {% for article in digest.articles.all %}
+        <li class="list-group-item">
+            <h5><a href="{{ article.url }}" target="_blank">{{ article.title }}</a></h5>
+            <p>{{ article.source }} - {{ article.published_at|date:"M d, Y" }}</p>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'news/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h1>Welcome to Daily News</h1>
+
+<h2>Your Search Terms</h2>
+<ul class="list-group mb-4">
+    {% for term in search_terms %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ term.term }}
+            <a href="{% url 'delete_search_term' term.pk %}" class="btn btn-danger btn-sm">Delete</a>
+        </li>
+    {% empty %}
+        <li class="list-group-item">No search terms yet. <a href="{% url 'add_search_term' %}">Add one</a></li>
+    {% endfor %}
+</ul>
+<a href="{% url 'add_search_term' %}" class="btn btn-primary mb-4">Add Search Term</a>
+
+<h2>Recent Digests</h2>
+{% for digest in digests %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">{{ digest.created_at|date:"M d, Y" }}</h5>
+            <p class="card-text">{{ digest.summary|truncatechars:200 }}</p>
+            <a href="{% url 'digest_detail' digest.pk %}" class="btn btn-secondary">View Full Digest</a>
+        </div>
+    </div>
+{% empty %}
+    <p>No digests yet. They will be generated daily at 8am in your timezone.</p>
+{% endfor %}
+{% endblock %}
