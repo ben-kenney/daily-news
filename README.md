@@ -63,12 +63,12 @@ A Django application that summarizes daily industry news using LLMs and sends pe
 
 5. Run migrations:
    ```bash
-   uv run python manage.py migrate
+   cd src && uv run python manage.py migrate
    ```
 
 6. Create superuser (optional):
    ```bash
-   uv run python manage.py createsuperuser
+   cd src && uv run python manage.py createsuperuser
    ```
 
 ## Usage
@@ -82,17 +82,17 @@ A Django application that summarizes daily industry news using LLMs and sends pe
 
 2. Start Celery worker:
    ```bash
-   uv run celery -A daily_news worker --loglevel=info
+   cd src && uv run celery -A daily_news worker --loglevel=info
    ```
 
 3. Start Celery Beat scheduler:
    ```bash
-   uv run celery -A daily_news beat --loglevel=info
+   cd src && uv run celery -A daily_news beat --loglevel=info
    ```
 
 4. Run Django server:
    ```bash
-   uv run python manage.py runserver
+   cd src && uv run python manage.py runserver
    ```
 
 ### User Workflow
@@ -107,7 +107,7 @@ A Django application that summarizes daily industry news using LLMs and sends pe
 
 Test news search and summarization:
 ```bash
-uv run python manage.py test_news "your search query"
+cd src && uv run python manage.py test_news "your search query"
 ```
 
 ## Architecture
@@ -145,8 +145,8 @@ See `.env.example` for all required environment variables.
 
 ### Code Structure
 
-- `daily_news/`: Django project settings
-- `news/`: Main app
+- `src/daily_news/`: Django project settings
+- `src/news/`: Main app
   - `models.py`: Database models
   - `views.py`: Web views
   - `tasks.py`: Celery tasks

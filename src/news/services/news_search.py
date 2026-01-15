@@ -2,6 +2,7 @@
 
 import os
 import requests
+from datetime import datetime, timedelta
 from typing import List, Dict, Optional
 from newsapi import NewsApiClient
 from ..models import Article
@@ -27,11 +28,12 @@ class NewsSearchService:
         if self.newsapi:
             try:
                 # Use NewsAPI
+                from_date = (datetime.now() - timedelta(days=days)).strftime('%Y-%m-%d')
                 response = self.newsapi.get_everything(
                     q=query,
                     language='en',
                     sort_by='publishedAt',
-                    from_param=f'{days}d'
+                    from_param=from_date
                 )
                 articles = []
                 for item in response.get('articles', []):
