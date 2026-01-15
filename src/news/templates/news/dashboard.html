@@ -19,7 +19,7 @@
 <a href="{% url 'add_search_term' %}" class="btn btn-primary mb-4">Add Search Term</a>
 
 <h2>Recent Digests</h2>
-<p class="text-muted">Next digest in {{ hours_until_next }} hours and {{ minutes_until_next }} minutes.</p>
+<p class="text-muted">Next digest in {{ hours_until_next }} hours and {{ minutes_until_next }} minutes (Timezone: {{ user_timezone }}).</p>
 {% for digest in digests %}
     <div class="card mb-3">
         <div class="card-body">

@@ -18,8 +18,10 @@ def dashboard(request):
     # Calculate time until next digest
     try:
         user_tz = pytz.timezone(request.user.userprofile.timezone)
+        user_timezone_str = request.user.userprofile.timezone
     except UserProfile.DoesNotExist:
         user_tz = pytz.UTC
+        user_timezone_str = 'UTC'
 
     now_utc = datetime.now(pytz.UTC)
     now_user = now_utc.astimezone(user_tz)
@@ -36,6 +38,7 @@ def dashboard(request):
         'search_terms': search_terms,
         'hours_until_next': hours,
         'minutes_until_next': minutes,
+        'user_timezone': user_timezone_str,
     })
 
 @login_required
