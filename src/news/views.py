@@ -54,8 +54,11 @@ def add_search_term(request):
                 messages.success(request, 'Search term added successfully.')
                 # Check if this is the first digest for the user
                 if not NewsDigest.objects.filter(user=request.user).exists():
-                    _generate_user_digest(request.user)
-                    messages.info(request, 'Generating your first news digest...')
+                    try:
+                        _generate_user_digest(request.user)
+                        messages.info(request, 'Generating your first news digest...')
+                    except Exception as e:
+                        messages.error(request, f'Failed to generate digest: {str(e)}')
                 return redirect('dashboard')
             except Exception:
                 messages.error(request, 'This search term already exists.')
