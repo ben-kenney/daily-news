@@ -80,14 +80,14 @@ A Django application that summarizes daily industry news using LLMs and sends pe
    redis-server
    ```
 
-2. Start Celery worker:
+2. Start Celery worker (run in background with &):
    ```bash
-   cd src && uv run celery -A daily_news worker --loglevel=info
+   cd src && uv run celery -A daily_news worker --loglevel=info &
    ```
 
-3. Start Celery Beat scheduler:
+3. Start Celery Beat scheduler (run in background with &):
    ```bash
-   cd src && uv run celery -A daily_news beat --loglevel=info
+   cd src && uv run celery -A daily_news beat --loglevel=info &
    ```
 
 4. Run Django server:
